@@ -1,0 +1,574 @@
+#:import NoTransition kivy.uix.screenmanager.NoTransition
+#:import hex kivy.utils.get_color_from_hex
+
+
+#------------------------------------------------------------#
+
+ScreenManagement:
+    transition: NoTransition()
+    LoginScreen:
+    ExamScreen:
+    CreateExam:
+    ProfileScreen:
+    CameraCapture:
+    Attendance_check:
+    Attendance_student:
+    NotificationScreen:
+#------------------------------------------------------------#
+<CreateExam>:
+    name: "CreateExam"
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            title: "Create Exam"
+            left_action_items:[["arrow-left", lambda x: root.Back_home()]]
+            padding: "32dp", 0, 0, 0
+
+        MDFloatLayout:
+            Image:
+                size_hint: None, None
+                size: 100, 100
+                pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+                source: 'Mobile_photo\icon\csv.png'
+
+            Label:
+                id: file_label
+                text: "sample.csv"
+                color: 1, 0.5, 0, 1
+                pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+                size: self.texture_size  # Set the size of the label to fit the text
+                text_size: (self.width * 0.8), None
+                halign: 'center'  # Align text horizontally to the center
+                valign: 'middle'  # Align text vertically to the middle
+            
+
+            MDRoundFlatIconButton:
+                text: "Open manager"
+                icon: "folder"
+                pos_hint: {'center_x': .5, 'center_y': .6}
+                on_release: root.file_manager_open()
+
+            MDTextField:
+                id: exam_name
+                hint_text: "exam name"
+                icon_left_color: 1, 0.5, 0, 1
+                text_color: 1, 0.5, 0, 1
+                size_hint: None, None
+                size: 300, 50
+                pos_hint: {"center_x": 0.5, "center_y":.4}  # Position the username field below the label
+            MDRoundFlatIconButton:
+                id: create_button
+                text: "Create"
+                text_color: 1, 1, 1, 1
+                line_color: 1, 0.5, 0, 1 
+                md_bg_color: 1, 0.5, 0, 1 
+                size_hint: None, None
+                size: 200, 50
+                pos_hint: {'center_x': .5, 'center_y': .3}
+                on_release: root.create_exam()
+#------------------------------------------------------------#
+<LoginScreen>:
+    name: "LoginScreen"
+    canvas:
+        Color:
+            rgb: 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    AsyncImage:
+        source: ''  # Replace 'path/to/your/image.png' with the path to your image
+        size_hint: None, None
+        size: self.texture_size  # Set the size of the image to its texture size
+        size: (root.width, min(root.width / self.image_ratio, root.height))
+        pos_hint: {'center_x': 0.5, 'bottom': 0.2}  # Position the image at the top center of the screen
+    Label:
+        text: "Login In"
+        color: 0, 0, 0, 1
+        font_size: 45
+        size_hint: None, None
+        size: self.texture_size
+        pos_hint: {"center_x": 0.5, "top": 0.7}  # Position the label below the image
+    MDTextField:
+        id: username_input
+        icon_left: "key-variant"
+        hint_text: "Utar Email"
+        icon_left_color: 1, 0.5, 0, 1
+        text_color: 1, 0.5, 0, 1
+        size_hint: None, None
+        size: 300, 50
+        pos_hint: {"center_x": 0.5, "top": 0.5}  # Position the username field below the label
+    MDTextField:
+        id: password_input
+        hint_text: "Password"
+        icon_left:'lock-open'
+        password: True
+        size_hint: None, None
+        icon_left_color: 1, 0.5, 0, 1 
+        text_color: 1, 0.5, 0, 1
+        size: 300, 50
+        pos_hint: {"center_x": 0.5, "top": 0.4}  # Position the password field below the username field
+    MDFillRoundFlatButton:
+        id: login_button
+        text: "Login"
+        text_color: 1, 1, 1, 1
+        line_color: 1, 0.5, 0, 1 
+        md_bg_color: 1, 0.5, 0, 1 
+        size_hint: None, None
+        size: 200, 50
+        pos_hint: {"center_x": 0.5, "top": 0.3}  # Position the button below the password field
+        on_release: root.verify_login()
+    Label:
+        id: error_label
+        text: ""
+        color: 1, 0, 0, 1  # Red color for error message
+        size_hint: None, None
+        size: self.texture_size
+        pos_hint: {"center_x": 0.5, "top": 0.2}  # Position the error message label below the login button
+
+#------------------------------------------------------------#
+
+<ProfileScreen>:
+    name: "ProfileScreen"
+    on_enter:
+        root.show_profile()
+
+    MDBoxLayout:
+        md_bg_color: 0.96, 0.96, 0.96, 1
+    
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Profile"
+            right_action_items: [["dots-vertical", ""]]
+            title_align: "left" 
+            padding: "32dp", 0, 0, 0
+            
+        ScrollView:
+            do_scroll_y: True
+            do_scroll_x: False
+
+    
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height  # Ensure the height of the BoxLayout adjusts to its content and available space
+                pos_hint: {"top": 1}  # Start the items at the top of the ScrollView
+                spacing: dp(10)  # Adjust the spacing between items
+                md_bg_color: 0.96, 0.96, 0.96, 1
+                padding: 48
+
+                FitImage:
+                    id:profile_image
+                    source: r''  
+                    size_hint_x: None
+                    size_hint_y: None
+                    halign: 'center'
+                    size: 200, 200
+                    pos_hint: { "center_x": .5, "center_y": 1, 'top': 0.8 }
+                    radius: 100, 100, 100, 100
+                    
+                 
+                        
+
+                MDLabel:
+                    id:profile_name
+                    text: ""
+                    halign: 'center'
+                    size_hint_y: None
+                    height: dp(48)
+                MDLabel:
+                    id:profile_email
+                    text: ""
+                    halign: 'center'
+                    size_hint_y: None
+                    height: dp(48)
+                MDLabel:
+                    id:profile_id
+                    text: ""
+                    halign: 'center'
+                    size_hint_y: None
+                    height: dp(48)
+                MDLabel:
+                    id:profile_faculty
+                    text: ""
+                    halign: 'center'
+                    size_hint_y: None
+                    height: dp(48)
+                
+                MDFillRoundFlatButton:
+                    id: logout_button
+                    text: "Log Out"
+                    text_color: 1, 1, 1, 1
+                    line_color: 1, 0.5, 0, 1 
+                    md_bg_color: 1, 0.5, 0, 1 
+                    size_hint_x: None
+                    size_hint_y: None
+                    halign: 'center'
+                    size_hint_y: None
+                    height: dp(48)
+                    size: 200, 50
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    on_release: app.root.current = "LoginScreen"
+
+        MDBottomNavigation:
+            panel_color: "#FFFFFF"
+            selected_color_background: [1, 1, 1, 1]  # Set the selected color background to fully transparent
+            size_hint_y: .2
+
+            MDBottomNavigationItem:
+                name: 'screen 1'
+                text: 'Exam'
+                icon: 'note-edit-outline'
+                badge_icon: "numeric-10"
+                text_color_active: [1,1,1,1]  # Set the active text color to white
+                text_color_normal: [1, 1, 1, 1]  # Set the normal text color to white
+                on_tab_press: app.root.current = "ExamScreen"
+                    
+
+            MDBottomNavigationItem:
+                name: 'screen 2'
+                text: 'Notification'
+                icon: 'bell-outline'
+                badge_icon: "numeric-5"
+                text_color_active: [1,1,1,1]  # Set the active text color to white
+                text_color_normal: [1, 1, 1, 1]  # Set the normal text color to white
+                on_tab_press: app.root.current = "NotificationScreen"
+            
+
+            MDBottomNavigationItem:
+                name: 'screen 3'
+                text: 'Camera'
+                icon: 'camera'
+                text_color_active: [1,1,1,1]  # Set the active text color to white
+                text_color_normal: [1, 1, 1, 1]  # Set the normal text color to white
+                on_tab_press: app.root.current = "CameraCapture"
+
+
+            MDBottomNavigationItem:
+                name: 'screen 4'
+                text: 'Profile'
+                icon: 'account'
+                text_color_active: [1,1,1,1]  # Set the active text color to white
+                text_color_normal: [1, 1, 1, 1]  # Set the normal text color to white
+                on_tab_press: app.root.current = "ProfileScreen"
+             
+
+#------------------------------------------------------------#
+<NotificationScreen>:
+    name: "NotificationScreen"
+    on_enter:
+        root.populate_notify_container()
+    
+
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: 0.96, 0.96, 0.96, 1
+
+        MDTopAppBar:
+            title: "Notification"
+            right_action_items: [["dots-vertical", ""]]
+            title_align: "left" 
+            padding: "32dp", 0, 0, 0
+
+        ScrollView:
+            do_scroll_y: True
+            do_scroll_x: False
+
+            MDList:
+                height: self.minimum_height
+                id:notify_container_go
+                sorientation: "vertical"
+                spacing: '20dp'
+                padding: '25dp'
+                size_hint_y: None
+
+                
+                
+        MDBottomNavigation:
+            panel_color: "#FFFFFF"
+            selected_color_background: [1, 1, 1, 1]  # Set the selected color background to fully transparent
+            size_hint_y: .2
+
+            MDBottomNavigationItem:
+                name: 'screen 1'
+                text: 'Exam'
+                icon: 'note-edit-outline'
+                badge_icon: "numeric-10"
+                text_color_active: [1, 1, 1, 1]  # Set the active text color to white
+                text_color_normal: [1, 1, 1, 1]  # Set the normal text color to white
+                on_tab_press: app.root.current = "ExamScreen"
+                    
+
+            MDBottomNavigationItem:
+                name: 'screen 2'
+                text: 'Notification'
+                icon: 'bell-outline'
+                badge_icon: "numeric-5"
+                text_color_active: [1, 1, 1, 1]  # Set the active text color to white
+                text_color_normal: [1, 1, 1, 1]  # Set the normal text color to white
+                on_tab_press: app.root.current = "NotificationScreen"
+            
+
+            MDBottomNavigationItem:
+                name: 'screen 3'
+                text: 'Camera'
+                icon: 'camera'
+                text_color_active: [1, 1, 1, 1]  # Set the active text color to white
+                text_color_normal: [1, 1, 1, 1]  # Set the normal text color to white
+                on_tab_press: app.root.current = "CameraCapture"
+
+            MDBottomNavigationItem:
+                name: 'screen 4'
+                text: 'Profile'
+                icon: 'account'
+                text_color_active: [1, 1, 1, 1]  # Set the active text color to white
+                text_color_normal: [1, 1, 1, 1]  # Set the normal text color to white
+                on_tab_press: app.root.current = "ProfileScreen"
+
+#------------------------------------------------------------#
+<ExamScreen>:
+    name: "ExamScreen"
+    on_enter:
+        root.populate_exam_container()
+
+    
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: 0.96, 0.96, 0.96, 1
+
+        MDTopAppBar:
+            title: "Exam"
+            right_action_items:[["plus", lambda x: root.Go_examscreen()]]
+            title_align: "left"
+            padding: "32dp", 0, 0, 0
+           
+        ScrollView:
+            do_scroll_y: True
+            do_scroll_x: False
+
+            MDList:
+                height: self.minimum_height
+                id:exam_container_go
+                sorientation: "vertical"
+                spacing: '20dp'
+                padding: '25dp'
+                size_hint_y: None
+  
+
+                    
+                
+              
+        MDBottomNavigation:
+            selected_color_background: [1, 1, 1, 1]  # Set the selected color background to fully transparent
+            color_selected: [1, 1, 1, 1]
+            panel_color: "#FFFFFF"
+            size_hint_y: .2
+
+            MDBottomNavigationItem:
+                name: 'screen 1'
+                text: 'Exam'
+                icon: 'note-edit-outline'
+                badge_icon: "numeric-10"
+                text_color_active: [1, 1, 1, 1]  # Set the active text color to white
+                text_color_normal: [1, 1, 1, 1]  # Set the normal text color to white
+                on_tab_press: app.root.current = "ExamScreen"
+                    
+
+            MDBottomNavigationItem:
+                name: 'screen 2'
+                text: 'Notification'
+                icon: 'bell-outline'
+                badge_icon: "numeric-5"
+                text_color_active: [1, 1, 1, 1]  # Set the active text color to white
+                text_color_normal: [1, 1, 1, 1]  # Set the normal text color to white
+                on_tab_press: app.root.current = "NotificationScreen"
+            
+
+            MDBottomNavigationItem:
+                name: 'screen 3'
+                text: 'Camera'
+                icon: 'camera'
+                text_color_active: [1, 1, 1, 1]  # Set the active text color to white
+                text_color_normal: [1, 1, 1, 1]  # Set the normal text color to white
+                on_tab_press: app.root.current = "CameraCapture"
+
+
+            MDBottomNavigationItem:
+                name: 'screen 4'
+                text: 'Profile'
+                icon: 'account'
+                text_color_active: [1, 1, 1, 1]  # Set the active text color to white
+                text_color_normal: [1, 1, 1, 1]  # Set the normal text color to white
+                on_tab_press: app.root.current = "ProfileScreen"
+
+#------------------------------------------------------------#
+<CameraCapture>:
+    name: "CameraCapture"
+    orientation: 'vertical'
+    
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: 0.96, 0.96, 0.96, 1
+        
+        MDTopAppBar:
+            title: "Exam"
+            left_action_items: [["arrow-left", lambda x: root.BackHome()]]
+            right_action_items: [["dots-vertical", ""]]
+            title_align: "left"
+            padding: "32dp", 0, 0, 0
+    
+        MDBoxLayout:
+            id: mybox
+            orientation: 'vertical'
+            size_hint_y: 0.9
+            pos_hint: {"center_y": 0.8}
+            padding: 10
+            spacing: 10
+            
+            Label:
+                id: instruction
+                text: "Put your face Inside the box"
+                color: 0, 0, 0, 1 
+                size_hint: None, None
+                size: self.texture_size
+                pos_hint: {"center_x": 0.5, "top": 0.2}  # Position the error message label below the login button
+            
+            RelativeLayout:
+                size_hint_y: None
+                height: '480dp'
+                Camera:
+                    id: camera
+                    resolution: (640, 480)
+                    play: True
+                    size_hint: None, None
+                    size: self.parent.size
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                
+                Image:
+                    source: "Mobile_photo\icon\square.png"
+                    size_hint: None, None
+                    size: [0.8 * self.parent.width, 0.8 * self.parent.height] 
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                
+            Label:
+                id: label_face
+                text: "Face undetected"
+                color: 1, 0, 0, 1  # Red color for error message
+                size_hint: None, None
+                size: self.texture_size
+                pos_hint: {"center_x": 0.5, "top": 0.2}  # Position the error message label below the login button
+            
+            Button:
+                text: 'Capture'
+                size_hint_y: None
+                height: '48dp'
+                on_press: root.capture()
+
+#---------------------------------------------------------------------------------------------------------#
+<Attendance_check>:
+    name:"Attendance_check"
+    orientation: 'vertical'
+    on_enter:root.Venue_list()
+
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: 0.96, 0.96, 0.96, 1
+
+        MDTopAppBar:
+            id:venue_screen
+            title: "Venue"
+            left_action_items:[["arrow-left", lambda x: root.back()]]
+            right_action_items:[["dots-vertical", ""]]
+            title_align: "left"
+            padding: "32dp", 0, 0, 0
+           
+        ScrollView:
+            do_scroll_y: True
+            do_scroll_x: False
+
+            MDList:
+                height: self.minimum_height
+                id:exam_attendance_check
+                sorientation: "vertical"
+                spacing: '20dp'
+                padding: '25dp'
+                size_hint_y: None
+
+#---------------------------------------------------------------------------------------------------------#
+<Attendance_student>:
+    name:"Attendance_student"
+    orientation: 'vertical'
+    on_enter:root.student_list()
+
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: 0.96, 0.96, 0.96, 1
+
+        MDTopAppBar:
+            id:student_screen
+            title: "Student"
+            left_action_items:[["arrow-left", lambda x: root.back()]]
+            right_action_items:[["dots-vertical", ""]]
+            title_align: "left"
+            padding: "32dp", 0, 0, 0
+           
+        ScrollView:
+            do_scroll_y: True
+            do_scroll_x: False
+
+            MDList:
+                height: self.minimum_height
+                id:student_attendance_check
+                sorientation: "vertical"
+                spacing: '20dp'
+                padding: '25dp'
+                size_hint_y: None
+#------------------------------------------------------------#
+#custom design component
+
+<CustomThreeLineAvatarListItem@ThreeLineAvatarIconListItem>:
+    md_bg_color: 0.84, 0.84, 0.84, 1
+    radius: [25, 25, 25, 25]
+    font_size: "1sp"
+    text_color: 1, 1, 1, 1
+
+    
+
+    RightCheckbox:
+        id: checkbox
+<studentThreeLineAvatarListItem@ThreeLineAvatarIconListItem>:
+    md_bg_color: 0.84, 0.84, 0.84, 1
+    radius: [25, 25, 25, 25]
+    font_size: "1sp"
+    text_color: 1, 1, 1, 1
+
+    
+
+    RightCheckbox:
+        id: checkbox
+
+
+
+<NormalThreeLineAvatarListItem@ThreeLineAvatarIconListItem>:
+    md_bg_color: 0.84, 0.84, 0.84, 1 
+    radius: [25, 25, 25, 25]
+    font_size: "1sp"
+    text_color: 1, 1, 1, 1
+    halign: 'center'
+    valign:'middle'
+
+<VenueListItem@ThreeLineAvatarIconListItem>:
+    md_bg_color: 0.84, 0.84, 0.84, 1 
+    radius: [25, 25, 25, 25]
+    font_size: "1sp"
+    text_color: 1, 1, 1, 1
+    halign: 'center'
+    valign:'middle'
+
+
+<RightCheckbox>:
+    id:tgh
+    size_hint: None, None
+    pos_hint: {'center_x': .5, 'center_y': .5}
+    on_active: True
