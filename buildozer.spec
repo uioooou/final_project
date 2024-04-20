@@ -1,10 +1,10 @@
 [app]
 
 # (str) Title of your application
-title = Final Year Attendance APP
+title = FinalYearAttendanceAPP
 
 # (str) Package name
-package.name = Attendance APP
+package.name = AttendanceAPP
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.finalyearproject
@@ -13,10 +13,10 @@ package.domain = org.finalyearproject
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts = 
 
 # (list) List of inclusions using pattern matching
-#source.include_patterns = assets/*,images/*.png
+source.include_patterns = *.*
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3==3.9.12,kivy==2.3.0,kivymd==1.0.2,pillow
+requirements = python3==3.9.12,kivy==2.3.0,kivymd==1.0.2,pillow,requests,certifi,urllib3
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -69,6 +69,7 @@ osx.python_version = 3.9.12
 # Kivy version to use
 osx.kivy_version = 2.3.0
 
+
 #
 # Android specific
 #
@@ -95,19 +96,19 @@ android.presplash_color = #FFFFFF
 
 # (list) Permissions
 # (See https://python-for-android.readthedocs.io/en/latest/buildoptions/#build-options-1 for all the supported syntaxes and properties)
-#android.permissions = android.permission.INTERNET, (name=android.permission.WRITE_EXTERNAL_STORAGE;maxSdkVersion=18)
+android.permissions = android.permission.INTERNET, (name=android.permission.WRITE_EXTERNAL_STORAGE;maxSdkVersion=18)
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
-#android.api = 31
+android.api = 31
 
 # (int) Minimum API your APK / AAB will support.
 #android.minapi = 21
 
 # (int) Android SDK version to use
-#android.sdk = 20
+android.sdk = 20
 
 # (str) Android NDK version to use
 #android.ndk = 23b
@@ -270,7 +271,7 @@ android.presplash_color = #FFFFFF
 #android.uses_library =
 
 # (str) Android logcat filters to use
-#android.logcat_filters = *:S python:D
+android.logcat_filters = *:S python:D
 
 # (bool) Android logcat only display log for activity's pid
 #android.logcat_pid_only = False
